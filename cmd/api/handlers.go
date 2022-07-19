@@ -14,7 +14,9 @@ func (app *Application) GetMusicProjects(w http.ResponseWriter, r *http.Request)
 
 	err := app.service.GetMusicProjects(&model)
 	if err != nil {
+		app.ClientError(w, http.StatusForbidden)
 		app.errorLog.Println(err)
+		return
 	}
 
 	if len(model) == 0 {
@@ -49,7 +51,9 @@ func (app *Application) GetMusicProjectsByStatus(w http.ResponseWriter, r *http.
 
 	err := app.service.GetMusicProjectsByStatus(parsedStatus, &musicProjects)
 	if err != nil {
+		app.ClientError(w, http.StatusForbidden)
 		app.errorLog.Println(err)
+		return
 	}
 
 	if len(musicProjects) == 0 {
@@ -68,9 +72,12 @@ func (app *Application) GetMusicProjectById(w http.ResponseWriter, r *http.Reque
 	var musicProject parsedmodels.MusicProject
 
 	projectId := chi.URLParam(r, "projectId")
+
 	err := app.service.GetMusicProjectById(projectId, &musicProject)
 	if err != nil {
+		app.ClientError(w, http.StatusForbidden)
 		app.errorLog.Println(err)
+		return
 	}
 
 	if unsafe.Sizeof(musicProject) == 0 {
@@ -92,7 +99,9 @@ func (app *Application) GetRepertoireByProjectId(w http.ResponseWriter, r *http.
 
 	err := app.service.GetRepertoireByProjectId(projectId, &repertoire)
 	if err != nil {
+		app.ClientError(w, http.StatusForbidden)
 		app.errorLog.Println(err)
+		return
 	}
 
 	if len(repertoire) == 0 {
@@ -114,7 +123,9 @@ func (app *Application) GetCastByProjectId(w http.ResponseWriter, r *http.Reques
 
 	err := app.service.GetCastByProjectId(projectId, &cast)
 	if err != nil {
+		app.ClientError(w, http.StatusForbidden)
 		app.errorLog.Println(err)
+		return
 	}
 
 	if len(cast) == 0 {
@@ -136,9 +147,10 @@ func (app *Application) GetScheduleByProjectId(w http.ResponseWriter, r *http.Re
 
 	err := app.service.GetScheduleByProjectId(projectId, &schedule)
 	if err != nil {
+		app.ClientError(w, http.StatusForbidden)
 		app.errorLog.Println(err)
+		return
 	}
-
 	if len(schedule) == 0 {
 		app.ClientError(w, http.StatusForbidden)
 		return
@@ -157,7 +169,9 @@ func (app *Application) GetLocationById(w http.ResponseWriter, r *http.Request) 
 	locationId := chi.URLParam(r, "locationId")
 	err := app.service.GetLocationById(locationId, &location)
 	if err != nil {
+		app.ClientError(w, http.StatusForbidden)
 		app.errorLog.Println(err)
+		return
 	}
 
 	if unsafe.Sizeof(location) == 0 {

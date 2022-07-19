@@ -71,6 +71,9 @@ func (c *Client) request(id, method, object, requestBody string) (*http.Response
 	if err != nil {
 		return nil, err
 	}
+	if response.StatusCode != http.StatusOK {
+		return nil, errors.New(fmt.Sprintf("notion client response status %v", response.StatusCode))
+	}
 
 	return response, nil
 }
